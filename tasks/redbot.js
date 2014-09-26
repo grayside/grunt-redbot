@@ -52,7 +52,7 @@ module.exports = function(grunt) {
             var res = exec(options.bin, args, function(error, result, code) {
                 if (error) {
                     grunt.warn('exec error: ' + error)
-                    return cb(error);
+                    return done(error);
                 }
                 if (options.format == 'har') {
                     result = JSON.parse(result);
