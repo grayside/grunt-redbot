@@ -61,9 +61,14 @@ module.exports = function(grunt) {
                         grunt.log.writeln(('Your redbot test received a response with the code HTTP ' + code).yellow);
                     }
                 }
-                grunt.log.subhead('Redbot Response for "' + uri + '"');
+                grunt.log.subhead(('Redbot Response for "' + uri + '"').underline);
                 grunt.log.writeln(result);
-                done();
+                // Setting the timeout seems to give the process sufficient time to print the buffer.
+                // Not sure which step of the pipeline (request, processing, print) needs this time, so making it
+                // a configurable in case it needs to vary by project.
+                setTimeout(function() {
+                    done();
+                }, options.timeout || 50);
             });
         });
     });
