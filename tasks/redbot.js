@@ -39,17 +39,17 @@ module.exports = function(grunt) {
         }
         
         var uris = this.data.uri;
-        var done = this.async;
+        var done = this.async();
         var exec = require('child_process').exec;
 
-        uris.forEach(function(uri, done) {
+        uris.forEach(function(uri) {
             var args = [uri, '-o ' + options.format];
             if (options.assets) {
                 args.push('-a');
             }
             var cmd = options.bin + ' ' + args.join(' ');
             grunt.verbose.writeln(('Exec: ' + cmd).cyan);
-            var res = exec(options.bin, args, function(error, result, code) {
+            var res = exec(cmd, null, function(error, result, code) {
                 if (error) {
                     grunt.warn('exec error: ' + error)
                     return done(error);
