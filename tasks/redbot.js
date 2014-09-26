@@ -39,15 +39,17 @@ module.exports = function(grunt) {
         }
         
         var uris = this.data.uri;
+        var done = this.async;
         var exec = require('child_process').exec;
-        var async = grunt.util.async;
-        var done = this.async();
 
-        async.forEach(uris, function(uri, cb) {
-            var assets = options.assets ? ' -a' : '';
-            var cmd = options.bin + ' ' + uri  + ' -o ' + options.format + assets;
+        uris.forEach(function(uri, done) {
+            var args = [uri, '-o ' + options.format];
+            if (options.assets) {
+                args.push('-a');
+            }
+            var cmd = options.bin + ' ' + args.join(' ');
             grunt.verbose.writeln(('Exec: ' + cmd).cyan);
-            var res = exec(cmd, null, function(error, result, code) {
+            var res = exec(options.bin, args, function(error, result, code) {
                 if (error) {
                     grunt.warn('exec error: ' + error)
                     return cb(error);
@@ -61,9 +63,8 @@ module.exports = function(grunt) {
                 }
                 grunt.log.subhead('Redbot Response for "' + uri + '"');
                 grunt.log.writeln(result);
+                done();
             });
         });
-
-        done(true);
     });
 }

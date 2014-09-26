@@ -62,7 +62,7 @@ The report format in which to render the results.
   and pass along to another part of your toolchain.
 * `html` is a clean presentation of the `txt` info for browser display.
 
-### severity
+### severity {not implemented}
 
 Type: `String`
 Default: `noFail`
