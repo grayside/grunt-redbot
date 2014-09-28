@@ -7,7 +7,8 @@ module.exports = function(grunt) {
             assets: false,
             bin: 'redbot',
             format: 'txt',
-            severity: 'noFail'
+            severity: 'noFail',
+            print: true,
         });
         var config = targetConfigOverride(options, this.data);
         validateConfig(config);
@@ -44,11 +45,13 @@ module.exports = function(grunt) {
                 return done(error);
             }
             if (config.format == 'har') {
-                result = JSON.parse(result);
-                validateHttpResponse(result.log.entries[0].response);
+                var json = JSON.parse(result);
+                validateHttpResponse(json.log.entries[0].response);
             }
-            grunt.log.subhead(('Redbot Response for "' + uri + '"').underline);
-            grunt.log.writeln(result);
+            if (config.print) {
+                grunt.log.subhead(('Redbot Response for "' + uri + '"').underline);
+                grunt.log.writeln(result);
+            }
             // Setting the timeout seems to give the process sufficient time to
             // print the buffer. Not sure which step of the pipeline (request,
             // processing, print) needs this time, so making it a configurable
@@ -81,7 +84,7 @@ module.exports = function(grunt) {
     var targetConfigOverride = function(options, targetConfig) {
         var config = [];
         Object.keys(options).forEach(function(attr) {
-            config[attr] = targetConfig[attr] ? targetConfig[attr] : options[attr];
+            config[attr] = targetConfig.hasOwnProperty(attr) ? targetConfig[attr] : options[attr];
         });
 
         return config;
