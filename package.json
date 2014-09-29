@@ -1,0 +1,30 @@
+{
+  "name": "grunt-redbot",
+  "version": "0.1.0",
+  "description": "Run redbot http validation testing with grunt.",
+  "author": {
+    "name": "Adam Ross",
+    "email": "grayside@gmail.com",
+    "url": "http://grayside.org"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/grayside/grunt-redbot.git"
+  },
+  "homepage": "http://github.com/grayside/grunt-redbot",
+  "bugs": {
+    "url": "http://github.com/grayside/grunt-redbot/issues"
+  },
+  "main": "Gruntfile.js",
+  "keywords": [
+    "gruntplugin",
+    "testing"
+  ],
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "peerDependencies": {
+    "grunt": "~0.4.0"
+  }
+}
