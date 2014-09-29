@@ -40,6 +40,7 @@ module.exports = function(grunt) {
         var exec = require('child_process').exec;
         grunt.verbose.writeln(('Exec: ' + cmd).cyan);
         var res = exec(cmd, null, function(error, result, code) {
+            var fail = false;
             if (error) {
                 grunt.warn('exec error: ' + error)
                 return done(error);
@@ -47,10 +48,14 @@ module.exports = function(grunt) {
             if (config.format == 'har') {
                 var json = JSON.parse(result);
                 validateHttpResponse(json.log.entries[0].response);
+                fail = isFailingResult(json.log.entries[0]._red_messages, config.severity);
             }
+            grunt.log.subhead(('Redbot Response for "' + uri + '"').underline);
             if (config.print) {
-                grunt.log.subhead(('Redbot Response for "' + uri + '"').underline);
                 grunt.log.writeln(result);
+            }
+            if (fail) {
+                grunt.warn('This request has been flagged as a failure.');
             }
             // Setting the timeout seems to give the process sufficient time to
             // print the buffer. Not sure which step of the pipeline (request,
@@ -76,6 +81,23 @@ module.exports = function(grunt) {
         }
 
         return code;
+    }
+
+    /**
+     * Check Redbot message severity against hte fail criteria of the target run.
+     */
+    var isFailingResult = function(results, severity) {
+        var fail = false;
+        results[0].level = 'warning';
+        if (severity != 'noFail') {
+            severity = severity == 'warning' ? ['warning', 'bad'] : ['bad'];
+            var fail = false;
+            fail = results.some(function(result) {
+                return severity.indexOf(result.level) > -1;
+            });
+        }
+
+        return fail;
     }
 
     /**

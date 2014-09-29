@@ -62,7 +62,7 @@ The report format in which to render the results.
   and pass along to another part of your toolchain.
 * `html` is a clean presentation of the `txt` info for browser display.
 
-### severity {not implemented}
+### severity
 
 Type: `String`
 Default: `noFail`
@@ -84,7 +84,7 @@ Default: `false`
 If the response contains HTML, setting this flag to `true` will instruct redbot to perform follow-up scans on
 referenced document assets.
 
-### print {not implemented}
+### print
 
 Type: `Boolean`
 Default: `true`
